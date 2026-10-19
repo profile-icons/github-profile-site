@@ -45,9 +45,8 @@ runs:
     - name: Setup
       uses: actions/setup-node@v7
       with:
-        node-version: 24
-        cache: npm
-        cache-dependency-path: ${{ runner.temp }}/github-profile-readme-site/package-lock.json
+        node-version: 26
+        package-manager-cache: false
 
     - name: Cache
       uses: actions/cache@v6
