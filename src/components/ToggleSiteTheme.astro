@@ -139,27 +139,27 @@ const controlButtonClass =
           </fieldset>
 
           {showStyleControls && (
-  <fieldset class="m-0 min-w-0 border-0 p-0">
-    <legend
-      class="mb-[0.4rem] p-0 text-[0.8rem] font-bold text-[var(--page-text)]"
-      data-i18n-theme-modal-style
-    >
-      {translations.style}
-    </legend>
-    <div class="flex flex-wrap gap-[0.4rem]">
-      {styleNames.map((styleName: string) => (
-        <button
-          type="button"
-          class={controlButtonClass}
-          data-site-theme-style={styleName}
-          aria-pressed="false"
-        >
-          {themeLbl(styleName)}
-        </button>
-      ))}
-    </div>
-  </fieldset>
-)}
+            <fieldset class="m-0 min-w-0 border-0 p-0">
+              <legend
+                class="mb-[0.4rem] p-0 text-[0.8rem] font-bold text-[var(--page-text)]"
+                data-i18n-theme-modal-style
+              >
+                {translations.style}
+              </legend>
+              <div class="flex flex-wrap gap-[0.4rem]">
+                {styleNames.map((styleName: string) => (
+                  <button
+                    type="button"
+                    class={controlButtonClass}
+                    data-site-theme-style={styleName}
+                    aria-pressed="false"
+                  >
+                    {themeLbl(styleName)}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          )}
         </div>
 
         <label
@@ -186,78 +186,88 @@ const controlButtonClass =
         class="mt-4 grid grid-cols-2 gap-3 p-0.5 max-[699px]:grid-cols-1"
       >
         {names.map((name: string) => (
-  <button
-    type="button"
-    class="site-theme-option flex min-w-0 cursor-pointer flex-col gap-[0.7rem] rounded-xl border border-[var(--toggle-border)] bg-[var(--link-background)] p-3 text-start text-[var(--page-text)] transition-[background-color,border-color,box-shadow,transform] duration-[160ms] hover:-translate-y-px hover:border-[var(--link-hover-border)] hover:bg-[var(--link-hover-background)] focus-visible:[outline:3px_solid_var(--focus-ring)] focus-visible:outline-offset-2 aria-pressed:border-[var(--link-hover-border)] aria-pressed:[box-shadow:inset_0_0_0_1px_var(--link-hover-border)]"
-    data-site-theme-option={name}
-    data-site-theme-search={`${themeLbl(name)} ${name}`}
-    aria-pressed="false"
-  >
-    <span class="flex items-center justify-between gap-3">
-      <span class="grid min-w-0 gap-[0.05rem]">
-        <strong class="overflow-hidden text-ellipsis whitespace-nowrap text-[0.9rem] leading-[1.3] text-[var(--page-text)]">
-          {themeLbl(name)}
-        </strong>
-        <small class="overflow-hidden text-ellipsis whitespace-nowrap font-mono text-[0.68rem] leading-[1.3] text-[var(--readme-muted)]">
-          {name}
-        </small>
-      </span>
-      <span
-        class="site-theme-option-selected inline-grid size-[1.45rem] shrink-0 place-items-center rounded-full border border-[var(--toggle-border)] text-xs font-extrabold text-transparent"
-        aria-hidden="true"
-      >
-        ✓
-      </span>
-    </span>
-
-    <span
-      class="site-theme-preview block min-h-[11.5rem] overflow-hidden rounded-[0.6rem] border border-[var(--details-border)] bg-[var(--page-background)] p-[0.9rem] font-sans text-[var(--page-text)] [box-shadow:inset_0_0_0_1px_rgb(127_127_127_/_0.04)] pointer-events-none"
-      data-site-theme-preview={name}
-      aria-hidden="true"
-    >
-      <span class="site-theme-preview-style-layer" aria-hidden="true"></span>
-      <span class="relative z-[1] grid justify-items-center text-center">
-        <img
-          class="block size-12 rounded-full border border-[var(--link-border)] bg-[var(--link-background)] object-cover [box-shadow:var(--link-shadow)]"
-          src={imageUrl}
-          alt=""
-          width="160"
-          height="160"
-          loading="lazy"
-        />
-        {tagline && (
-          <small
-            class="mt-[0.4rem] max-w-[90%] text-[0.56rem] font-medium leading-[1.3] text-[var(--tagline-text)]"
-            data-i18n-tagline
+          <button
+            type="button"
+            class="site-theme-option flex min-w-0 cursor-pointer flex-col gap-[0.7rem] rounded-xl border border-[var(--toggle-border)] bg-[var(--link-background)] p-3 text-start text-[var(--page-text)] transition-[background-color,border-color,box-shadow,transform] duration-[160ms] hover:-translate-y-px hover:border-[var(--link-hover-border)] hover:bg-[var(--link-hover-background)] focus-visible:[outline:3px_solid_var(--focus-ring)] focus-visible:outline-offset-2 aria-pressed:border-[var(--link-hover-border)] aria-pressed:[box-shadow:inset_0_0_0_1px_var(--link-hover-border)]"
+            data-site-theme-option={name}
+            data-site-theme-search={`${themeLbl(name)} ${name}`}
+            aria-pressed="false"
           >
-            {tagline.trim()}
-          </small>
-        )}
-      </span>
+            <span class="flex items-center justify-between gap-3">
+              <span class="grid min-w-0 gap-[0.05rem]">
+                <strong class="overflow-hidden text-ellipsis whitespace-nowrap text-[0.9rem] leading-[1.3] text-[var(--page-text)]">
+                  {themeLbl(name)}
+                </strong>
+                <small class="overflow-hidden text-ellipsis whitespace-nowrap font-mono text-[0.68rem] leading-[1.3] text-[var(--readme-muted)]">
+                  {name}
+                </small>
+              </span>
+              <span
+                class="site-theme-option-selected inline-grid size-[1.45rem] shrink-0 place-items-center rounded-full border border-[var(--toggle-border)] text-xs font-extrabold text-transparent"
+                aria-hidden="true"
+              >
+                ✓
+              </span>
+            </span>
 
-      <span class="relative z-[1] mt-[0.7rem] grid gap-[0.34rem] border-t border-[var(--readme-border)] pt-[0.68rem] text-[0.56rem] leading-[1.45] text-[var(--readme-text)]">
-        <strong
-          class="text-[0.72rem] leading-[1.2] text-[var(--readme-heading)]"
-          data-i18n-theme-modal-preview-title
-        >
-          {translations.previewTitle}
-        </strong>
-        <span
-          data-i18n-theme-modal-preview-body
-          set:html={translations.previewHTML}
-        />
-        <span class="mt-[0.05rem] grid gap-[0.1rem] rounded-[0.3rem] border border-[var(--readme-border)] bg-[var(--code-background)] px-2 py-[0.42rem] font-mono text-[0.5rem] leading-[1.4] text-[var(--code-text)]">
-          <span>
-            <b class="font-semibold text-[var(--syntax-keyword)]">const</b>{" "}
-            <i class="not-italic text-[var(--syntax-variable)]">theme</i> ={" "}
-            <em class="not-italic text-[var(--syntax-string)]">"{name}"</em>
-            <span>;</span>
-          </span>
-        </span>
-      </span>
-    </span>
-  </button>
-))}
+            <span
+              class="site-theme-preview block min-h-[11.5rem] overflow-hidden rounded-[0.6rem] border border-[var(--details-border)] bg-[var(--page-background)] p-[0.9rem] font-sans text-[var(--page-text)] [box-shadow:inset_0_0_0_1px_rgb(127_127_127_/_0.04)] pointer-events-none"
+              data-site-theme-preview={name}
+              aria-hidden="true"
+            >
+              <span
+                class="site-theme-preview-style-layer"
+                aria-hidden="true"
+              ></span>
+              <span class="relative z-[1] grid justify-items-center text-center">
+                <img
+                  class="block size-12 rounded-full border border-[var(--link-border)] bg-[var(--link-background)] object-cover [box-shadow:var(--link-shadow)]"
+                  src={imageUrl}
+                  alt=""
+                  width="160"
+                  height="160"
+                  loading="lazy"
+                />
+                {tagline && (
+                  <small
+                    class="mt-[0.4rem] max-w-[90%] text-[0.56rem] font-medium leading-[1.3] text-[var(--tagline-text)]"
+                    data-i18n-tagline
+                  >
+                    {tagline.trim()}
+                  </small>
+                )}
+              </span>
+
+              <span class="relative z-[1] mt-[0.7rem] grid gap-[0.34rem] border-t border-[var(--readme-border)] pt-[0.68rem] text-[0.56rem] leading-[1.45] text-[var(--readme-text)]">
+                <strong
+                  class="text-[0.72rem] leading-[1.2] text-[var(--readme-heading)]"
+                  data-i18n-theme-modal-preview-title
+                >
+                  {translations.previewTitle}
+                </strong>
+                <span
+                  data-i18n-theme-modal-preview-body
+                  set:html={translations.previewHTML}
+                />
+                <span class="mt-[0.05rem] grid gap-[0.1rem] rounded-[0.3rem] border border-[var(--readme-border)] bg-[var(--code-background)] px-2 py-[0.42rem] font-mono text-[0.5rem] leading-[1.4] text-[var(--code-text)]">
+                  <span>
+                    <b class="font-semibold text-[var(--syntax-keyword)]">
+                      const
+                    </b>{" "}
+                    <i class="not-italic text-[var(--syntax-variable)]">
+                      theme
+                    </i>{" "}
+                    ={" "}
+                    <em class="not-italic text-[var(--syntax-string)]">
+                      "{name}"
+                    </em>
+                    <span>;</span>
+                  </span>
+                </span>
+              </span>
+            </span>
+          </button>
+        ))}
       </div>
 
       <p

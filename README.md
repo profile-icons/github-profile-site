@@ -8,38 +8,11 @@ Deploy your GitHub user or organization profile `README.md` as a configurable st
 - (optional) i18n translations
 - (optional) website icon links
 - (optional) organization badge links
-- and full support of GitHub README Markdown format
+- full support of GitHub README Markdown format
 
 An example site can be found here: [https://profile-icons.github.io/github-profile-readme-site/](https://profile-icons.github.io/github-profile-readme-site/)
 
 ## Instructions
-
-### Setup
-
-<details>
-<summary>Option 1: Repository Template</summary>
-
-##### Repository Template
-
-Create a [template](https://github.com/new?template_name=github-profile-readme-site&template_owner=r055a) copy (recommended) of this repository, or a [fork](https://github.com/r055a/github-profile-readme-site/fork) (for contributing).
-
-#### User profile
-
-If you don't have a GitHub profile `README.md`, name the repo copy the same as your username for creating one.
-
-An example can be found here for a user profile: [r055a/r055a](https://github.com/r055a/r055a).
-
-#### Organization profile
-
-If the profile is for an organization, name it `.github` and create a `profile/README.md` to make it.
-
-An example can be found here for an organization profile: [uni-git-projects/.github](https://github.com/uni-git-projects/.github).
-</details>
-
-<details>
-<summary>Option 2: Action Workflow</summary>
-
-##### Action Workflow
 
 Create and add the following workflow to: `.github/workflows/deploy-profile-site.yml`
 
@@ -71,9 +44,9 @@ jobs:
 
       - name: Build
         id: profile-site
-        uses: profile-icons/github-profile-readme-site@v1
+        uses: profile-icons/github-profile-readme-site@main
         with:
-          hf-token: ${{ secrets.HF_TOKEN }}
+          hf-token: ${{ secrets.HF_TOKEN }}  # optional
 
       - name: Upload
         uses: actions/upload-pages-artifact@v5

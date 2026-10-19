@@ -13,7 +13,7 @@
     "url": "https://github.com/profile-icons/github-profile-readme-site/issues"
   },
   "engines": {
-    "node": ">=24.21.0"
+    "node": ">=26.9.0"
   },
   "scripts": {
     "i18n": "node scripts/i18n-trans.mjs",
@@ -23,30 +23,26 @@
     "verify": "biome check . && astro check && tsc --noEmit",
     "verify:fix": "biome check --write . && astro check && tsc --noEmit"
   },
-  "overrides": {
-    "sharp": "0.35.4"
-  },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "@huggingface/transformers": "^4.3.0",
-    "astro": "^7.3.3",
-    "bootstrap-icons": "^1.13.1",
+    "@huggingface/transformers": "^4.3.1",
+    "astro": "^7.4.0",
+    "bootstrap-icons": "^1.13.2",
     "emoji-regex": "^11.0.0",
-    "marked": "^18.0.13",
-    "simple-icons": "^16.31.0"
+    "marked": "^18.1.1",
+    "simple-icons": "^16.35.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@biomejs/biome": "^2.5.14",
-    "@tailwindcss/typography": "^0.5.20",
+    "@biomejs/biome": "^2.5.15",
+    "@tailwindcss/typography": "^0.5.4",
     "@tailwindcss/vite": "^4.3.3",
-    "globals": "^17.12.0",
+    "globals": "^17.13.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   },
   "allowScripts": {
     "onnxruntime-node@1.30.0": true,
-    "esbuild@0.28.2": true,
     "protobufjs@7.6.6": true
   }
 }

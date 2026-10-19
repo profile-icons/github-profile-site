@@ -148,32 +148,32 @@ const i18n: string | undefined =
     <meta name="color-scheme" content={fixedThemeTone ?? "light dark"}>
 
     {lightThemeColor && (
-  <meta
-    name="theme-color"
-    content={lightThemeColor}
-    data-light={lightThemeColor}
-    data-dark={darkThemeColor ?? lightThemeColor}
-  />
-)}
+      <meta
+        name="theme-color"
+        content={lightThemeColor}
+        data-light={lightThemeColor}
+        data-dark={darkThemeColor ?? lightThemeColor}
+      />
+    )}
 
     {themeCss && <style is:inline set:html={themeCss} />}
     {themeStyleCss && <style is:inline set:html={themeStyleCss} />}
     {allThemeData && (
-  <script
-    id="all-theme-data"
-    type="application/json"
-    is:inline
-    set:html={allThemeData}
-  />
-)}
+      <script
+        id="all-theme-data"
+        type="application/json"
+        is:inline
+        set:html={allThemeData}
+      />
+    )}
     {allStyleData && (
-  <script
-    id="all-style-data"
-    type="application/json"
-    is:inline
-    set:html={allStyleData}
-  />
-)}
+      <script
+        id="all-style-data"
+        type="application/json"
+        is:inline
+        set:html={allStyleData}
+      />
+    )}
     <script is:inline>
     (() => {
       const root = document.documentElement;
@@ -321,8 +321,13 @@ const i18n: string | undefined =
     })();
     </script>
     {i18n && (
-  <script id="i18n-data" type="application/json" is:inline set:html={i18n} />
-)}
+      <script
+        id="i18n-data"
+        type="application/json"
+        is:inline
+        set:html={i18n}
+      />
+    )}
 
     <script is:inline>
     (() => {
@@ -1327,34 +1332,37 @@ const i18n: string | undefined =
 
     <link
       rel="icon"
-      href={favUrl ?? `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}favicon.svg`}
+      href={favUrl ??
+        `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}favicon.svg`}
     >
 
     {description && (
-  <>
-    <meta name="description" content={description} />
-    <meta property="og:description" content={description} />
-  </>
-)}
+      <>
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+      </>
+    )}
 
     {baseUrl && (
-  <>
-    <link rel="canonical" href={baseUrl} />
-    <meta property="og:url" content={baseUrl} />
-  </>
-)}
+      <>
+        <link rel="canonical" href={baseUrl} />
+        <meta property="og:url" content={baseUrl} />
+      </>
+    )}
 
     <meta property="og:type" content="profile">
     <meta property="og:title" content={title}>
 
     {imageUrl && (
-  <>
-    <meta property="og:image" content={imageUrl} />
-    {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
-  </>
-)}
+      <>
+        <meta property="og:image" content={imageUrl} />
+        {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
+      </>
+    )}
 
-    {jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd} />}
+    {jsonLd && (
+      <script is:inline type="application/ld+json" set:html={jsonLd} />
+    )}
   </head>
 
   <body>

@@ -97,23 +97,26 @@ const structData = {
   <main
     class="content-shell relative mx-auto min-h-screen max-w-4xl px-5 py-10 sm:px-8 sm:py-16"
   >
-    {(isToggleSiteTheme || isToggleSiteStyle || isToggleTheme || isToggleLocale) && (
-  <div class="absolute right-5 top-4 z-10 flex items-center gap-2 sm:right-8 sm:top-6">
-    {isToggleSiteTheme && (
-      <ToggleSiteTheme
-        imageUrl={githubAvatarUrl}
-        tagline={profileSrc.tagline}
-        translations={profileSrc.themeModal}
-        styleNames={styleType.type === "all" ? styleType.names : []}
-      />
+    {(isToggleSiteTheme ||
+      isToggleSiteStyle ||
+      isToggleTheme ||
+      isToggleLocale) && (
+      <div class="relative z-10 mb-6 flex flex-wrap items-center justify-center gap-2 sm:absolute sm:right-8 sm:top-6 sm:mb-0">
+        {isToggleSiteTheme && (
+          <ToggleSiteTheme
+            imageUrl={githubAvatarUrl}
+            tagline={profileSrc.tagline}
+            translations={profileSrc.themeModal}
+            styleNames={styleType.type === "all" ? styleType.names : []}
+          />
+        )}
+        {isToggleSiteStyle && (
+          <ToggleSiteStyle translations={profileSrc.themeModal} />
+        )}
+        {isToggleTheme && <ToggleTheme />}
+        {isToggleLocale && <ToggleLocale locales={locales} />}
+      </div>
     )}
-    {isToggleSiteStyle && (
-      <ToggleSiteStyle translations={profileSrc.themeModal} />
-    )}
-    {isToggleTheme && <ToggleTheme />}
-    {isToggleLocale && <ToggleLocale locales={locales} />}
-  </div>
-)}
 
     <ProfileAvatar
       imageUrl={githubAvatarUrl}
