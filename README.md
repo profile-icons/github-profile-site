@@ -1,6 +1,6 @@
 # GitHub Profile Site
 
-Deploy your GitHub user or organization profile as a configurable site with:
+Deploy your GitHub user or org profile as a site with:
 
 - profile avatar
 - (optional) tagline
@@ -69,7 +69,7 @@ jobs:
 
 ### Configure
 
-To display your profile `README.md` content, edit `site.config.json`:
+Configure your profile site using `site.config.json`:
 
 - **[required]** GitHub _user_ or _organization_ name: `githubName`
 - **[required]** GitHub profile site _URL_: `siteUrl`
@@ -86,6 +86,7 @@ To display your profile `README.md` content, edit `site.config.json`:
 - [_optional_] The language the profile README Markdown is written in (defaults to _"en"_): `language`
 - [_optional_] A list of locales for providing translations from `language` - refer below for more info: `locales`
 - [_optional_] A dictionary of website-link mapping for providing icon links - refer below for more info: `links`
+- [_optional_] A Google Analytics measurement ID: `gaId`
 
 ```json
 {
@@ -104,7 +105,7 @@ To display your profile `README.md` content, edit `site.config.json`:
   "language": "",
   "locales": [],
   "links": {},
-  "gaId":
+  "gaId": ""
 }
 ```
 
@@ -181,7 +182,7 @@ Each entry in the **organizations** array is a GitHub organization name, ie: `["
 
 ### Locales - i18n
 
-Profile translations are generated for **locales** prior to deployment using the [Xenova/m2m100_418M](https://huggingface.co/Xenova/m2m100_418M) model.
+Profile translations are generated for **locales** prior to deployment using the [casawolice/small100-onnx](https://huggingface.co/casawolice/small100-onnx) model.
 
 Each entry in the **locales** array is a code corresponding to a language being translated, ie: `["sv", "de", ...]`
 
@@ -387,7 +388,7 @@ npm run preview
 
 # Contribute
 
-Before making a Pull Request, ensure it addresses an Issue, and verify:
+Before making a Pull Request linked to an Issue, verify:
 
 ```Bash
 npm run verify:fix

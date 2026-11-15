@@ -77,21 +77,26 @@ const controlButtonClass: string = "v-theme-choice";
   <div class="site-theme-dialog-scroll ">
     <div class="site-theme-dialog-sticky ">
       <div class="v-toggle-site-theme-7">
-        <div>
-          <h2
-            id="site-theme-dialog-heading"
-            class="v-toggle-site-theme-8"
-            data-i18n-theme-modal-title
-          >
-            {translations.title}
-          </h2>
-          <p class="v-toggle-site-theme-9" data-i18n-theme-modal-description>
-            {translations.description}
-          </p>
-        </div>
+        <h2
+          id="site-theme-dialog-heading"
+          class="v-toggle-site-theme-8"
+          data-i18n-theme-modal-title
+        >
+          {translations.title}
+        </h2>
+        <input
+          id="site-theme-search"
+          class="site-theme-dialog-search"
+          type="search"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label={translations.searchThemes}
+          aria-controls="site-theme-options"
+          data-i18n-theme-modal-search
+        >
         <button
           type="button"
-          class="site-theme-dialog-close "
+          class="site-theme-dialog-close"
           aria-label="Close theme selector"
           data-site-theme-dialog-close
         >
@@ -148,22 +153,6 @@ const controlButtonClass: string = "v-theme-choice";
             </fieldset>
           )}
         </div>
-
-        <label
-          class="v-toggle-site-theme-17"
-          for="site-theme-search"
-          data-i18n-theme-modal-search
-        >
-          {translations.searchThemes}
-        </label>
-        <input
-          id="site-theme-search"
-          class="site-theme-dialog-search "
-          type="search"
-          autocomplete="off"
-          spellcheck="false"
-          aria-controls="site-theme-options"
-        >
       </div>
     </div>
 

@@ -47,31 +47,28 @@ const isLocaleDialog: boolean = sortedLocales.length > 2;
   >
     <div class="i18n-dialog-scroll ">
       <div class="i18n-dialog-sticky ">
-        <div class="v-toggle-site-style-5">
+        <div class="i18n-dialog-header">
           <h2 id="i18n-dialog-heading" class="v-toggle-site-theme-8">
             Language
           </h2>
+          <input
+            id="i18n-search"
+            class="i18n-dialog-search"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Search languages"
+            aria-controls="i18n-options"
+          />
           <button
             type="button"
-            class="i18n-dialog-close "
+            class="i18n-dialog-close"
             aria-label="Close language selector"
             data-i18n-dialog-close
           >
             ×
           </button>
         </div>
-
-        <label class="v-toggle-site-theme-17" for="i18n-search">
-          Search languages
-        </label>
-        <input
-          id="i18n-search"
-          class="i18n-dialog-search "
-          type="search"
-          autocomplete="off"
-          spellcheck="false"
-          aria-controls="i18n-options"
-        />
       </div>
 
       <div class="v-toggle-site-theme-19">
@@ -150,6 +147,7 @@ if (button instanceof HTMLButtonElement) {
 
     if (name) name.textContent = nativeName;
     option.dataset.i18nSearch = `${nativeName} ${englishName} ${locale}`;
+    option.dataset.i18nSort = englishName;
   }
 
   const localeCollator = new Intl.Collator("en", {

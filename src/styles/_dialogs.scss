@@ -24,7 +24,7 @@
     pointer-events: none;
   }
 
-  .site-theme-option[hidden] {
+  :is(.site-theme-option, .i18n-option)[hidden] {
     display: none;
   }
 

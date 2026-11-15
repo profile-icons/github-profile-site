@@ -1,8 +1,8 @@
 {
   "githubName": "profile-icons",
   "siteUrl": "https://profile-icons.github.io",
-  "repoName": "github-profile-readme-site",
-  "basePath": "github-profile-readme-site",
+  "repoName": "github-profile-site",
+  "basePath": "github-profile-site",
   "tagline": "A GitHub profile README site example tagline",
   "tabName": "GitHub Profile",
   "tabSuffix": "Example Site",

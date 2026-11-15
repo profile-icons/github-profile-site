@@ -159,3 +159,4 @@ vite.config.ts.timestamp-*
 public/i18n/
 .models/
 src/gen/
+.idea

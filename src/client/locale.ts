@@ -339,10 +339,11 @@ type Translation = {
       );
       setThemeModalText("[data-i18n-theme-modal-mode]", themeModal.mode);
       setThemeModalText("[data-i18n-theme-modal-style]", themeModal.style);
-      setThemeModalText(
+      for (const input of document.querySelectorAll<HTMLInputElement>(
         "[data-i18n-theme-modal-search]",
-        themeModal.searchThemes,
-      );
+      )) {
+        input.setAttribute("aria-label", themeModal.searchThemes);
+      }
       setThemeModalText(
         "[data-i18n-theme-modal-preview-title]",
         themeModal.previewTitle,

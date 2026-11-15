@@ -342,12 +342,21 @@ html.dark .v-404-4:hover {
     padding-bottom: 0.75rem;
   }
 }
+.v-toggle-site-theme-7,
+.i18n-dialog-header {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 0.75rem;
+}
 .v-toggle-site-theme-7 {
   margin-bottom: 1.25rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
+}
+@media (max-width: 699px) {
+  .v-toggle-site-theme-7,
+  .i18n-dialog-header {
+    gap: 0.35rem;
+  }
 }
 .v-toggle-site-theme-8 {
   margin: 0;
@@ -419,6 +428,7 @@ html.dark .v-404-4:hover {
 }
 .site-theme-dialog-search {
   @include ui.searchDialog;
+  min-width: 0;
 }
 .site-theme-dialog-search:focus {
   @include ui.focusDialog;
@@ -820,6 +830,7 @@ html.dark .star-wars-avatar {
 }
 .i18n-dialog-search {
   @include ui.searchDialog;
+  min-width: 0;
 }
 .i18n-dialog-search:focus {
   @include ui.focusDialog;
