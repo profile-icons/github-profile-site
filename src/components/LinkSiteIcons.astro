@@ -9,10 +9,7 @@ const { links }: { links: IconLink[] } = Astro.props;
 ---
 
 {links.length > 0 && (
-  <nav
-    class="mb-8 flex w-full max-w-full flex-wrap justify-center gap-[0.45rem] [direction:ltr]"
-    aria-label="Profile links"
-  >
+  <nav class="star-wars-site-links " aria-label="Profile links">
     {links.map((link: IconLink) => (
       <a
         href={link.url}
@@ -20,7 +17,7 @@ const { links }: { links: IconLink[] } = Astro.props;
         title={link.label}
         target={link.isOpenTab ? "_blank" : undefined}
         rel={link.rel}
-        class="inline-grid aspect-square w-[2.45rem] place-items-center rounded-full border border-[var(--link-border)] bg-[var(--link-background)] text-[var(--link-text)] [box-shadow:var(--link-shadow)] backdrop-blur-[8px] transition-[transform,background-color,border-color,color] duration-150 hover:-translate-y-0.5 hover:border-[var(--link-hover-border)] hover:bg-[var(--link-hover-background)] hover:text-[var(--link-hover-text)] focus-visible:[outline:3px_solid_var(--focus-ring)] focus-visible:outline-offset-[3px]"
+        class="v-linksiteicons-2"
       >
         {link.icon ? (
           <svg

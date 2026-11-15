@@ -32,9 +32,8 @@ jobs:
         uses: actions/cache@v6
         with:
           path: |
-            .models
             .cache/huggingface
-          key: hf-nllb-200-distilled-600m-q8-${{ runner.os }}-${{ runner.arch }}-v3
+          key: hf-small100-onnx-int8-${{ runner.os }}-${{ runner.arch }}-v3
 
       - name: Install
         run: npm ci

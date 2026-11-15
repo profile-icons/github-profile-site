@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import sitemap from "@astrojs/sitemap";
-import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import { getReadMeSrc } from "./src/lib/gh.ts";
 
@@ -16,9 +15,6 @@ export default defineConfig({
   output: "static",
   trailingSlash: "never",
   integrations: [sitemap()],
-  vite: {
-    plugins: [tailwindcss()],
-  },
   build: {
     format: "directory",
   },

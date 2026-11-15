@@ -4,14 +4,7 @@ export type ThemeVar = Record<string, string>;
 
 export type ThemeType =
   | { type: "default" }
-  | { type: "name"; name: string; light: ThemeVar; dark: ThemeVar }
-  | {
-      type: "all";
-      name: string;
-      light: ThemeVar;
-      dark: ThemeVar;
-      names: string[];
-    };
+  | { type: "name"; name: string; light: ThemeVar; dark: ThemeVar };
 
 interface Theme {
   light: ThemeVar;
@@ -114,14 +107,13 @@ const parseHex: (val: string) => [number, number, number] | undefined = (
 ): [number, number, number] | undefined => {
   const match: RegExpExecArray | null =
     /^#([\da-f]{3}|[\da-f]{4}|[\da-f]{6}|[\da-f]{8})$/i.exec(val);
-  if (!match) return undefined;
+  const group: string | undefined = match?.[1];
+  if (!group) return undefined;
 
   const hex: string =
-    match[1].length === 3 || match[1].length === 4
-      ? [...match[1]]
-          .map((digit: string): string => `${digit}${digit}`)
-          .join("")
-      : match[1];
+    group.length === 3 || group.length === 4
+      ? [...group].map((digit: string): string => `${digit}${digit}`).join("")
+      : group;
 
   return [
     Number.parseInt(hex.slice(0, 2), 16),
@@ -166,7 +158,7 @@ const parseRGB: (val: string) => [number, number, number] | undefined = (
   const match: RegExpExecArray | null = /^rgba?\((.*)\)$/i.exec(val);
   if (!match) return undefined;
 
-  const body: string = match[1].trim();
+  const body: string = match[1]?.trim() ?? "";
   let channels: string[];
   let alpha: string | undefined;
 
@@ -182,7 +174,7 @@ const parseRGB: (val: string) => [number, number, number] | undefined = (
       .split("/")
       .map((part: string): string => part.trim());
     if (slashParts.length > 2) return undefined;
-    channels = slashParts[0].split(/\s+/).filter(Boolean);
+    channels = (slashParts[0] ?? "").split(/\s+/).filter(Boolean);
     alpha = slashParts[1];
   }
 
@@ -208,7 +200,11 @@ const relLuminance: ([r, g, b]: [number, number, number]) => number = ([
     const val: number = channel / 255;
     return val <= 0.04045 ? val / 12.92 : ((val + 0.055) / 1.055) ** 2.4;
   });
-  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  return (
+    0.2126 * (linear[0] ?? 0) +
+    0.7152 * (linear[1] ?? 0) +
+    0.0722 * (linear[2] ?? 0)
+  );
 };
 
 export const isThemeColor: (val: string) => boolean = (val: string): boolean =>
@@ -252,22 +248,9 @@ export const resolveTheme: (val?: string | undefined) => ThemeType = (
   }
 
   if (themeVal === "all") {
-    const names: string[] = themeNames();
-    const preferredName: string = "abyss";
-    const name: string | undefined = names.includes(preferredName)
-      ? preferredName
-      : names[0];
-    const theme: Theme | undefined = name ? themes[name] : undefined;
-    if (!name || !theme) {
-      throw new Error("Theme collection is empty.");
-    }
-    return {
-      type: "all",
-      name,
-      light: theme.light,
-      dark: theme.dark,
-      names,
-    };
+    throw new Error(
+      'Theme "all" has been removed; use a theme name such as "star_wars", "stars", or "abyss". The theme selector is always available.',
+    );
   }
 
   const theme: Theme | undefined = themes[themeVal];
@@ -304,10 +287,10 @@ export const themeCSS: (
 ): string => {
   const nameStr: string = JSON.stringify(name);
   const lightSelector: string = isPreview
-    ? `html[data-site-theme=${nameStr}],.site-theme-dialog[data-preview-mode="light"] .site-theme-preview[data-site-theme-preview=${nameStr}]`
+    ? `html[data-site-theme=${nameStr}],:is(.site-theme-dialog,.site-style-dialog)[data-preview-mode="light"] .site-theme-preview[data-site-theme-preview=${nameStr}]`
     : `html[data-site-theme=${nameStr}]`;
   const darkSelector: string = isPreview
-    ? `html[data-site-theme=${nameStr}].dark,.site-theme-dialog[data-preview-mode="dark"] .site-theme-preview[data-site-theme-preview=${nameStr}]`
+    ? `html[data-site-theme=${nameStr}].dark,:is(.site-theme-dialog,.site-style-dialog)[data-preview-mode="dark"] .site-theme-preview[data-site-theme-preview=${nameStr}]`
     : `html[data-site-theme=${nameStr}].dark`;
   return `${lightSelector}{${variantCSS(light)}}${darkSelector}{${variantCSS(dark)}}`;
 };

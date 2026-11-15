@@ -305,7 +305,7 @@ export async function fetchOrgs(orgNames: string[]): Promise<GitHubOrg[]> {
           login,
           avatarUrl: orgObj.avatar_url.trim(),
           profileUrl,
-          websiteUrl,
+          ...(websiteUrl ? { websiteUrl } : {}),
         };
       } catch (error) {
         const msg: string =
@@ -330,28 +330,25 @@ function encPath(path: string): string {
 }
 
 function optImg(html: string): string {
-  let imgIdx = 0;
+  let imgIdx: number = 0;
 
-  return html.replace(/<img\b([^>]*)>/gi, (_tag: string, attrs: string) => {
-    const isFirst = imgIdx++ === 0;
-
-    let output = `<img${attrs}>`;
-    if (!/\bdecoding\s*=/i.test(output)) {
-      output = output.replace(/>$/, ' decoding="async">');
-    }
-
-    if (!/\bloading\s*=/i.test(output)) {
-      output = output.replace(
-        />$/,
-        isFirst ? ' loading="eager">' : ' loading="lazy">',
+  return html.replace(
+    /<img\b([^>]*)>/gi,
+    (_tag: string, attrs: string): string => {
+      const svg: boolean = /\bsrc\s*=\s*["'][^"']*\.svg(?:[?#]|["'])/i.test(
+        attrs,
       );
-    }
-
-    if (isFirst && !/\bfetchpriority\s*=/i.test(output)) {
-      output = output.replace(/>$/, ' fetchpriority="high">');
-    }
-    return output;
-  });
+      const first: boolean = imgIdx++ === 0 && !svg;
+      let img: string = `<img${attrs}>`;
+      if (!/\bdecoding\s*=/i.test(img))
+        img = img.replace(/>$/, ' decoding="async">');
+      if (!/\bloading\s*=/i.test(img))
+        img = img.replace(/>$/, ` loading="${first ? "eager" : "lazy"}">`);
+      if (!/\bfetchpriority\s*=/i.test(img))
+        img = img.replace(/>$/, ` fetchpriority="${first ? "high" : "low"}">`);
+      return img;
+    },
+  );
 }
 
 function fmtUrls(html: string, src: ReadmeSrc, defBranch: string): string {

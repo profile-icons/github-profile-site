@@ -9,6 +9,7 @@ export interface SiteConfig {
   tabName?: string;
   tabSuffix?: string;
   description: string;
+  gaId?: string;
   theme: string;
   themeColor?: string;
   style?: string;
@@ -34,5 +35,5 @@ for (const locale of locales) {
   }
 }
 
-export const githubProfileUrl = `https://github.com/${siteConfig.githubName}`;
-export const githubAvatarUrl = `${githubProfileUrl}.png?size=320`;
+export const githubProfileUrl: string = `https://github.com/${siteConfig.githubName}`;
+export const githubAvatarUrl: string = `${githubProfileUrl}.png?size=320`;

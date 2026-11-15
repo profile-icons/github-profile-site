@@ -59,9 +59,9 @@ async function readGenDoc(locale: string): Promise<Profile> {
     }
 
     const profile = parsed as Partial<Profile>;
-    const modal = profile.themeModal;
-    const isThemeModal = modal !== undefined && modal !== null;
-    const isThemeModalValid =
+    const modal: ThemeModalTrans | undefined = profile.themeModal;
+    const isThemeModal: boolean = modal !== undefined && modal !== null;
+    const isThemeModalValid: boolean =
       !isThemeModal ||
       (typeof modal === "object" &&
         typeof modal.title === "string" &&

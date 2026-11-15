@@ -32,7 +32,7 @@ let iconIdxPromiseBS: Promise<Map<string, IconSrcBS>> | undefined;
 
 function getIconIdxBS(): Promise<Map<string, IconSrcBS>> {
   iconIdxPromiseBS ??= (async () => {
-    const require = createRequire(import.meta.url);
+    const require: NodeJS.Require = createRequire(import.meta.url);
     const iconDir: string = resolve(
       dirname(require.resolve("bootstrap-icons/package.json")),
       "icons",
@@ -40,15 +40,13 @@ function getIconIdxBS(): Promise<Map<string, IconSrcBS>> {
     const files: string[] = await readdir(iconDir);
     const index = new Map<string, IconSrcBS>();
 
-    // Keep SVGs out of Vite's module graph: Astro eagerly walks dynamic imports
-    // when collecting dev CSS, including icons the page never uses.
     for (const file of files.sort()) {
       if (!file.endsWith(".svg")) continue;
       const slug: string = file.slice(0, -4);
       index.set(norm(slug), { slug, path: resolve(iconDir, file) });
     }
     return index;
-  })().catch(() => new Map<string, IconSrcBS>());
+  })().catch((): Map<string, IconSrcBS> => new Map<string, IconSrcBS>());
 
   return iconIdxPromiseBS;
 }
@@ -113,7 +111,7 @@ function parseSvgBS(svg: string, title: string): LinkIcon | undefined {
   }
 
   const attributes: string = svgMatch[1] ?? "";
-  const body: string = svgMatch[2]?.trim();
+  const body: string = svgMatch[2]?.trim() ?? "";
   if (!body) {
     return undefined;
   }
@@ -137,12 +135,14 @@ function loadIconBS(iconStr: string): Promise<LinkIcon | undefined> {
   }
 
   const iconPromise: Promise<LinkIcon | undefined> = getIconIdxBS()
-    .then(async (index): Promise<LinkIcon | undefined> => {
-      const src: IconSrcBS | undefined = index.get(normIconStr);
-      if (!src) return undefined;
-      const svg: string = await readFile(src.path, "utf8");
-      return parseSvgBS(svg, getLbl(src.slug));
-    })
+    .then(
+      async (index: Map<string, IconSrcBS>): Promise<LinkIcon | undefined> => {
+        const src: IconSrcBS | undefined = index.get(normIconStr);
+        if (!src) return undefined;
+        const svg: string = await readFile(src.path, "utf8");
+        return parseSvgBS(svg, getLbl(src.slug));
+      },
+    )
     .catch((): undefined => undefined);
 
   iconCacheBS.set(normIconStr, iconPromise);
@@ -213,9 +213,8 @@ export async function getIconLinks(
       key,
       label: icon?.title ?? getLbl(key),
       url,
-      icon,
-      fallbackIcon: icon ? undefined : getIconFallBack(key, url),
-      rel: isOpenTab ? "noopener noreferrer" : undefined,
+      ...(icon ? { icon } : { fallbackIcon: getIconFallBack(key, url) }),
+      ...(isOpenTab ? { rel: "noopener noreferrer" } : {}),
       isOpenTab,
     });
   }

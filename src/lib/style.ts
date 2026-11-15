@@ -1,4 +1,4 @@
-import stylesObj from "../styles.json";
+import stylesObj from "../styles/styles.json";
 
 interface StyleI {
   bg: string;
@@ -8,8 +8,7 @@ interface StyleI {
 
 export type Style =
   | { type: "default" }
-  | { type: "named"; name: string; style: StyleI }
-  | { type: "all"; name: string; style: StyleI; names: string[] };
+  | { type: "named"; name: string; style: StyleI };
 
 const styles = stylesObj as Record<string, StyleI>;
 
@@ -42,10 +41,24 @@ export const styleCSS: (
   )}${css("background-position", style.bgPos)}`;
   const siteRule: string = `html[data-theme-style=${nameStr}] body{${declarations}}`;
 
-  if (!isPreview) return siteRule;
+  const sharedStarsRule: string =
+    name === "stars"
+      ? `:root{--stars-style-background:${style.bg};--stars-style-background-size:${style.bgSize ?? "auto"};--stars-style-background-position:${style.bgPos ?? "center"};}`
+      : "";
 
-  const previewRule: string = `.site-theme-dialog[data-preview-style=${nameStr}] .site-theme-preview-style-layer{${declarations}}`;
-  return `${siteRule}${previewRule}`;
+  const lightStarsRule: string =
+    name === "stars"
+      ? `html[data-theme-style=${nameStr}]:not(.dark) body{background:#fff;background-size:auto;background-position:0 0;}`
+      : "";
+
+  if (!isPreview) return `${sharedStarsRule}${siteRule}${lightStarsRule}`;
+
+  const previewRule: string = `.site-theme-dialog[data-preview-style=${nameStr}] .site-theme-preview-style-layer,.site-style-dialog .site-theme-preview-style-layer[data-site-style-preview=${nameStr}]{${declarations}}`;
+  const lightStarsPreviewRule: string =
+    name === "stars"
+      ? `.site-theme-dialog[data-preview-mode="light"][data-preview-style=${nameStr}] .site-theme-preview-style-layer,.site-style-dialog[data-preview-mode="light"] .site-theme-preview-style-layer[data-site-style-preview=${nameStr}]{background:#fff;background-size:auto;background-position:0 0;}`
+      : "";
+  return `${sharedStarsRule}${siteRule}${lightStarsRule}${previewRule}${lightStarsPreviewRule}`;
 };
 
 export const allStylesCSS: (names?: string[]) => string = (
@@ -65,21 +78,9 @@ export const resolveStyle: (val?: string | undefined) => Style = (
   if (!styleVal) return { type: "default" };
 
   if (styleVal === "all") {
-    const names: string[] = styleNames();
-    const preferredName: string = "stars";
-    const name: string | undefined = names.includes(preferredName)
-      ? preferredName
-      : names[0];
-    const style: StyleI | undefined = name ? styles[name] : undefined;
-    if (!name || !style) {
-      throw new Error("Theme style collection is empty.");
-    }
-    return {
-      type: "all",
-      name,
-      style,
-      names,
-    };
+    throw new Error(
+      'Style "all" has been removed; use a style name such as "stars" or "solid". The style selector is always available.',
+    );
   }
 
   const style: StyleI | undefined = styles[styleVal];

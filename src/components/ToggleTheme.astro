@@ -1,12 +1,12 @@
 <button
   id="theme-toggle"
   type="button"
-  class="theme-toggle inline-grid aspect-square w-11 cursor-pointer place-items-center rounded-full border border-[var(--toggle-border)] bg-[var(--toggle-background)] text-[var(--toggle-text)] [box-shadow:var(--toggle-shadow)] backdrop-blur-[12px] transition-[transform,background-color,border-color,color] duration-[160ms] hover:-translate-y-px hover:scale-[1.03] hover:border-[var(--link-hover-border)] hover:bg-[var(--link-hover-background)] hover:text-[var(--link-hover-text)] focus-visible:[outline:3px_solid_var(--focus-ring)] focus-visible:outline-offset-[3px]"
+  class="theme-toggle "
   aria-label="Toggle dark mode"
   aria-pressed="false"
 >
   <svg
-    class="hidden fill-none stroke-current [stroke-width:1.8] [stroke-linecap:round] [stroke-linejoin:round] dark:block"
+    class="v-toggletheme-2"
     viewBox="0 0 24 24"
     width="20"
     height="20"
@@ -19,7 +19,7 @@
   </svg>
 
   <svg
-    class="block fill-none stroke-current [stroke-width:1.8] [stroke-linecap:round] [stroke-linejoin:round] dark:hidden"
+    class="v-toggletheme-3"
     viewBox="0 0 24 24"
     width="20"
     height="20"
@@ -55,9 +55,7 @@ if (button instanceof HTMLButtonElement) {
 
     try {
       localStorage.setItem("gh-profile-theme", theme);
-    } catch {
-      // pass
-    }
+    } catch {}
 
     window.dispatchEvent(
       new CustomEvent("readme-theme-change", { detail: { theme } }),

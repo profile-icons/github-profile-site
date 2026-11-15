@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -22,7 +22,7 @@
   },
   "css": {
     "parser": {
-      "tailwindDirectives": true
+      "tailwindDirectives": false
     }
   },
   "html": {
@@ -33,7 +33,7 @@
   },
   "overrides": [
     {
-      "includes": ["src/style.css"],
+      "includes": ["src/style.scss", "src/styles/**/*.scss"],
       "linter": {
         "rules": {
           "complexity": {

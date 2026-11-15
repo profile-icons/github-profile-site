@@ -1,6 +1,6 @@
-# GitHub Profile README Site
+# GitHub Profile Site
 
-Deploy your GitHub user or organization profile `README.md` as a configurable static Astro site using Actions with:
+Deploy your GitHub user or organization profile as a configurable site with:
 
 - profile avatar
 - (optional) tagline
@@ -8,13 +8,12 @@ Deploy your GitHub user or organization profile `README.md` as a configurable st
 - (optional) i18n translations
 - (optional) website icon links
 - (optional) organization badge links
+- (optional) Google analytics
 - full support of GitHub README Markdown format
 
-An example site can be found here: [https://profile-icons.github.io/github-profile-readme-site/](https://profile-icons.github.io/github-profile-readme-site/)
+# Instructions
 
-## Instructions
-
-Create and add the following workflow to: `.github/workflows/deploy-profile-site.yml`
+Create the workflow: `.github/workflows/deploy-profile-site.yml`
 
 ```yaml
 name: deploy-profile-site
@@ -44,7 +43,7 @@ jobs:
 
       - name: Build
         id: profile-site
-        uses: profile-icons/github-profile-readme-site@main
+        uses: profile-icons/github-profile-site@main
         with:
           hf-token: ${{ secrets.HF_TOKEN }}  # optional
 
@@ -70,7 +69,7 @@ jobs:
 
 ### Configure
 
-To display your profile README content in the site, create/edit `site.config.json`:
+To display your profile `README.md` content, edit `site.config.json`:
 
 - **[required]** GitHub _user_ or _organization_ name: `githubName`
 - **[required]** GitHub profile site _URL_: `siteUrl`
@@ -80,7 +79,7 @@ To display your profile README content in the site, create/edit `site.config.jso
 - [_optional_] The tab (user/org) identifier for the profile site (defaults to `githubName`): `tabName`
 - [_optional_] The tab title for the profile site (defaults to _"GitHub profile"_): `tabSuffix`
 - [_optional_] The site description (not displayed on the deployed site): `description`
-- [_optional_] A theme name for the site theme (`github-soft`, for example) - refer below for more info: `theme`
+- [_optional_] A theme name for the site theme (`github_soft`, for example) - refer below for more info: `theme`
 - [_optional_] A (RGB, HEX) color for accent, supporting colors (and `theme` when it is an empty string): `themeColor`
 - [_optional_] A style name for the site style (`aurora`, for example) - refer below for more info: `style`
 - [_optional_] A list of GitHub organization links to display as badges - refer below for more info: `organizations` 
@@ -104,7 +103,8 @@ To display your profile README content in the site, create/edit `site.config.jso
   "organizations": [],
   "language": "",
   "locales": [],
-  "links": {}
+  "links": {},
+  "gaId":
 }
 ```
 
@@ -121,9 +121,9 @@ To display your profile README content in the site, create/edit `site.config.jso
 * `everforest`
 * `flexoki`
 * `github`
-* `github-colorblind`
-* `github-high-contrast`
-* `github-soft`
+* `github_colorblind`
+* `github_high_contrast`
+* `github_soft`
 * `gruvbox`
 * `horizon`
 * `iceberg`
@@ -131,22 +131,24 @@ To display your profile README content in the site, create/edit `site.config.jso
 * `material`
 * `monokai`
 * `moonlight`
-* `night-owl`
-* `nightfox`
+* `night_owl`
+* `night_fox`
 * `nord`
-* `one-dark`
+* `one_dark`
 * `oxocarbon`
-* `palenight`
-* `papercolor`
+* `pale_night`
+* `paper_color`
 * `poimandres`
-* `rose-pine`
+* `rose_pine`
 * `solarized`
+* `stars`
+* `star_wars`
 * `synthwave84`
-* `tokyo-night`
+* `tokyo_night`
 * `tomorrow`
 * `vesper`
 * `vitesse`
-* `zenburn`
+* `zen_burn`
 </details>
 
 Each theme supports light and dark mode. CSS can be found in `src/themes.json`.
@@ -179,7 +181,7 @@ Each entry in the **organizations** array is a GitHub organization name, ie: `["
 
 ### Locales - i18n
 
-Profile translations are generated for **locales** prior to deployment using the [Xenova/nllb-200-distilled-600M](https://huggingface.co/Xenova/nllb-200-distilled-600M) model.
+Profile translations are generated for **locales** prior to deployment using the [Xenova/m2m100_418M](https://huggingface.co/Xenova/m2m100_418M) model.
 
 Each entry in the **locales** array is a code corresponding to a language being translated, ie: `["sv", "de", ...]`
 
@@ -189,247 +191,105 @@ Each entry in the **locales** array is a code corresponding to a language being 
 
 ```json
 {
-  "Acehnese (Latin script)": "ace",
-  "Acehnese (Arabic script)": "ace-Arab",
   "Afrikaans": "af",
-  "Akan": "ak",
   "Albanian": "sq",
   "Amharic": "am",
   "Arabic": "ar",
-  "Arabic (Mesopotamian)": "acm",
-  "Arabic (Ta'izzi-Adeni)": "acq",
-  "Arabic (Tunisian)": "aeb",
-  "Arabic (South Levantine)": "ajp",
-  "Arabic (North Levantine)": "apc",
-  "Arabic (Najdi)": "ars",
-  "Arabic (Moroccan)": "ary",
-  "Arabic (Egyptian)": "arz",
   "Armenian": "hy",
-  "Assamese": "as",
   "Asturian": "ast",
-  "Awadhi": "awa",
-  "Aymara": "ayr",
   "Azerbaijani": "az",
-  "Azerbaijani (Azerbaijan)": "az-AZ",
-  "Azerbaijani (Iran)": "az-IR",
-  "Azerbaijani (South)": "azb",
-  
-  "Balinese": "ban",
-  "Bambara": "bm",
-  "Banjar (Latin script)": "bjn",
-  "Banjar (Arabic script)": "bjn-Arab",
   "Bashkir": "ba",
-  "Basque": "eu",
   "Belarusian": "be",
-  "Bemba": "bem",
   "Bengali": "bn",
-  "Bhojpuri": "bho",
   "Bosnian": "bs",
-  "Buginese": "bug",
+  "Breton": "br",
   "Bulgarian": "bg",
   "Burmese": "my",
-  
   "Catalan": "ca",
   "Cebuano": "ceb",
-  "Central Atlas Tamazight": "tzm",
-  "Central Kanuri (Latin script)": "knc",
-  "Central Kanuri (Arabic script)": "knc-Arab",
-  "Chhattisgarhi": "hne",
   "Chinese": "zh",
-  "Chinese (Simplified)": "zh-Hans",
-  "Chinese (Traditional)": "zh-Hant",
-  "Chinese (China)": "zh-CN",
-  "Chinese (Hong Kong)": "zh-HK",
-  "Chinese (Macao)": "zh-MO",
-  "Chinese (Singapore)": "zh-SG",
-  "Chinese (Taiwan)": "zh-TW",
-  "Chokwe": "cjk",
-  "Crimean Tatar": "crh",
   "Czech": "cs",
-  
   "Danish": "da",
-  "Dari": "prs",
-  "Dari (Afghanistan)": "fa-AF",
   "Dutch": "nl",
-  "Dyula": "dyu",
-  "Dzongkha": "dz",
-  
   "English": "en",
-  "Esperanto": "eo",
   "Estonian": "et",
-  "Ewe": "ee",
-  
-  "Faroese": "fo",
-  "Fijian": "fj",
-  "Filipino": "fil",
   "Finnish": "fi",
-  "Fon": "fon",
   "French": "fr",
-  "Friulian": "fur",
   "Fulah": "ff",
-  
   "Galician": "gl",
   "Ganda": "lg",
   "Georgian": "ka",
   "German": "de",
   "Greek": "el",
-  "Guarani": "gn",
   "Gujarati": "gu",
-  
   "Haitian Creole": "ht",
   "Hausa": "ha",
   "Hebrew": "he",
   "Hindi": "hi",
   "Croatian": "hr",
   "Hungarian": "hu",
-  
   "Icelandic": "is",
   "Igbo": "ig",
   "Iloko": "ilo",
   "Indonesian": "id",
   "Irish": "ga",
   "Italian": "it",
-  
   "Japanese": "ja",
   "Javanese": "jv",
-  "Jingpho": "kac",
-  
-  "Kabiyè": "kbp",
-  "Kabyle": "kab",
-  "Kabuverdianu": "kea",
-  "Kamba": "kam",
   "Kannada": "kn",
-  "Kashmiri (Arabic script)": "ks",
-  "Kashmiri (Devanagari script)": "ks-Deva",
   "Kazakh": "kk",
   "Khmer": "km",
-  "Kikuyu": "ki",
-  "Kimbundu": "kmb",
-  "Kongo": "kg",
   "Korean": "ko",
-  "Kurdish": "ku",
-  "Kurdish (Arabic script)": "ku-Arab",
-  "Kurdish (Central)": "ckb",
-  "Kurdish (Latin script)": "ku-Latn",
-  "Kurdish (Northern)": "kmr",
-  "Kyrgyz": "ky",
-  
   "Lao": "lo",
-  "Latgalian": "ltg",
   "Latvian": "lv",
-  "Ligurian": "lij",
-  "Limburgish": "li",
   "Lingala": "ln",
   "Lithuanian": "lt",
-  "Lombard": "lmo",
-  "Luba-Kasai": "lua",
-  "Luo": "luo",
   "Luxembourgish": "lb",
-  
   "Macedonian": "mk",
-  "Magahi": "mag",
-  "Maithili": "mai",
   "Malagasy": "mg",
   "Malay": "ms",
   "Malayalam": "ml",
-  "Maltese": "mt",
-  "Maori": "mi",
   "Marathi": "mr",
-  "Meitei (Bengali script)": "mni",
-  "Minangkabau (Latin script)": "min",
-  "Mizo": "lus",
   "Mongolian": "mn",
-  "Mossi": "mos",
-  
   "Nepali": "ne",
   "Northern Sotho": "ns",
-  "Northern Sotho (nso)": "nso",
   "Norwegian": "no",
-  "Norwegian Bokmål": "nb",
-  "Norwegian Nynorsk": "nn",
-  "Nuer": "nus",
-  "Nyanja": "ny",
-  
   "Occitan": "oc",
   "Odia": "or",
-  "Oromo": "om",
-  
-  "Pangasinan": "pag",
-  "Papiamento": "pap",
   "Pashto": "ps",
   "Persian": "fa",
-  "Persian (Iran)": "fa-IR",
   "Polish": "pl",
   "Portuguese": "pt",
   "Punjabi": "pa",
-  
-  "Quechua": "qu",
-  
   "Romanian": "ro",
-  "Rundi": "rn",
   "Russian": "ru",
-  "Kinyarwanda": "rw",
-  
-  "Samoan": "sm",
-  "Sango": "sg",
-  "Sanskrit": "sa",
-  "Santali": "sat",
-  "Sardinian": "sc",
   "Scottish Gaelic": "gd",
   "Serbian": "sr",
-  "Shan": "shn",
-  "Shona": "sn",
-  "Sicilian": "scn",
-  "Silesian": "szl",
   "Sindhi": "sd",
   "Sinhala": "si",
   "Slovak": "sk",
   "Slovenian": "sl",
   "Somali": "so",
-  "Southern Sotho": "st",
   "Spanish": "es",
   "Sundanese": "su",
   "Swahili": "sw",
   "Swati": "ss",
   "Swedish": "sv",
-  
   "Tagalog": "tl",
-  "Tajik": "tg",
-  "Tamasheq (Latin script)": "taq",
-  "Tamasheq (Tifinagh script)": "taq-Tfng",
   "Tamil": "ta",
-  "Tatar": "tt",
-  "Telugu": "te",
   "Thai": "th",
-  "Tibetan": "bo",
-  "Tigrinya": "ti",
-  "Tok Pisin": "tpi",
-  "Tsonga": "ts",
   "Tswana": "tn",
-  "Tumbuka": "tum",
   "Turkish": "tr",
-  "Turkmen": "tk",
-  "Twi": "tw",
-  
   "Ukrainian": "uk",
-  "Umbundu": "umb",
   "Urdu": "ur",
-  "Uyghur": "ug",
   "Uzbek": "uz",
-  
-  "Venetian": "vec",
   "Vietnamese": "vi",
-  
-  "Waray": "war",
   "Welsh": "cy",
+  "Western Frisian": "fy",
   "Wolof": "wo",
-  
   "Xhosa": "xh",
-  
   "Yiddish": "yi",
   "Yoruba": "yo",
-  "Cantonese": "yue",
-  
   "Zulu": "zu"
 }
 ```
@@ -457,71 +317,77 @@ Each entry in the **links** `{key: value}` object maps a platform/icon ID (`key`
   "tagline": "Just a guy who likes ☕",
   "tabName": "Adam Ross",
   "tabSuffix": "GitHub Profile",
-  "description": "A static GitHub profile site template for rendering README markdown content with avatar, tagline, org & icon links.",
-  "theme": "github-soft",
+  "description": "A GitHub profile site for rendering README content with avatar, tagline, translations, org & icon links.",
+  "theme": "github_soft",
   "themeColor": "",
   "style": "aurora",
-  "organizations": [
-    "uni-git-projects",
-    "uni-projects-demos",
-    "profile-icons",
-    "hacktoberfest-stats"
-  ],
+  "organizations": ["profile-icons", "uni-projects-demos", "uni-git-projects"],
   "language": "en",
-  "locales": ["sv", "de", "es", "fr", "hi", "zh"],
+  "locales": [
+    "en",
+    "sv",
+    "zh",
+    "pt",
+    "ja",
+    "de",
+    "ru",
+    "uk",
+    "es",
+    "fr",
+    "fi",
+    "tr",
+    "ko",
+    "pl",
+    "vi",
+    "nl",
+    "hi",
+    "it",
+    "ar",
+    "he",
+    "th",
+    "cs"
+  ],
   "links": {
-    "buymeacoffee": "https://example.com",
-    "dev.to": "https://example.com",
-    "email": "example@email.com",
-    "github": "https://example.com",
-    "gitlab": "https://example.com",
-    "googleScholar": "https://example.com",
-    "huggingface": "https://example.com",
-    "kaggle": "https://example.com",
-    "ko-fi": "https://example.com",
-    "linkedin": "https://example.com",
-    "mastodon": "https://example.com",
-    "medium": "https://example.com",
-    "orcid": "https://example.com",
-    "researchgate": "https://example.com",
-    "stackoverflow": "https://example.com",
-    "website": "https://example.com",
-    "x": "https://example.com",
-    "youtube": "https://example.com"
-  }
+    "buymeacoffee": "https://buymeacoffee.com/kofi.kiwi",
+    "github": "https://r055a.github.io/r055a/",
+    "huggingface": "https://huggingface.co/r055a",
+    "kaggle": "https://www.kaggle.com/r055a20",
+    "ko-fi": "https://ko-fi.com/kawhe_kiwi",
+    "x": "https://x.com/r0S5a",
+    "youtube": "https://youtube.com/@whatevername"
+  },
+  "gaId": ""
 }
 ```
 
-## Local Development
-
-### Install
+# Install
 
 ```Bash
 npm install
 ```
 
-### i18n
+## i18n
 
 ```Bash
 npm run i18n
 ```
 
-### Development
+# Run
 
 ```Bash
 npm run dev
 ```
 
-### Build
+# Build
 
 ```Bash
 npm run build
 npm run preview
 ```
 
-## Contribute
+# Contribute
 
-Before making a Pull Request, ensure it addresses an Issue, and verify the branch passes:
+Before making a Pull Request, ensure it addresses an Issue, and verify:
 
 ```Bash
 npm run verify:fix
