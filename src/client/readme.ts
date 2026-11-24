@@ -1,3 +1,5 @@
+import { localeNorm } from "../lib/i18n";
+
 type SvgCarrier = {
   url: string;
   carrier: HTMLSourceElement | HTMLImageElement;
@@ -76,12 +78,6 @@ type SvgCarrier = {
       source.media = matches ? "all" : "not all";
     }
   };
-
-  const localeNorm = (locale: string): string =>
-    String(locale ?? "")
-      .trim()
-      .replaceAll("_", "-")
-      .toLowerCase();
 
   const localeMatches = (systemLanguage: string, locale: string): boolean => {
     const requested = localeNorm(locale);
@@ -540,5 +536,3 @@ type SvgCarrier = {
     { once: true },
   );
 })();
-
-export {};

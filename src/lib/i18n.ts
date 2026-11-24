@@ -1,3 +1,5 @@
+import themeModal from "../theme-modal.json";
+
 export interface ThemeModalTrans {
   title: string;
   description: string;
@@ -10,15 +12,11 @@ export interface ThemeModalTrans {
   styleLayers: string;
 }
 
-export const themeModalSrc: ThemeModalTrans = {
-  title: "Theme",
-  description: "Preview and choose the site theme.",
-  mode: "Mode",
-  style: "Style",
-  searchThemes: "Search themes",
-  previewTitle: "Theme preview",
-  previewHTML:
-    'GitHub profile README Markdown content, <span class="site-theme-preview-link">links</span> and <span class="site-theme-preview-inline-code">code</span>.',
-  themePalette: "Theme palette",
-  styleLayers: "Style layers",
-};
+export const themeModalSrc: ThemeModalTrans = themeModal;
+
+export function localeNorm(locale: unknown): string {
+  return String(locale ?? "")
+    .trim()
+    .replaceAll("_", "-")
+    .toLowerCase();
+}

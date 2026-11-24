@@ -1,9 +1,9 @@
 ---
 import { type ThemeModalTrans, themeModalSrc } from "../lib/i18n";
-import { themeNames } from "../lib/theme";
 import SitePreview from "./SitePreview.astro";
 
 interface Props {
+  names: string[];
   imageUrl: string;
   tagline?: string;
   styleNames?: string[];
@@ -11,12 +11,12 @@ interface Props {
 }
 
 const {
+  names,
   imageUrl,
   tagline,
   styleNames = [],
   translations = themeModalSrc,
 } = Astro.props;
-const names: string[] = themeNames();
 const showStyleControls: boolean = styleNames.length > 1;
 const themeLbl = (name: string): string =>
   name === "star_wars"

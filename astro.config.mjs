@@ -1,17 +1,20 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
-import { getReadMeSrc } from "./src/lib/gh.ts";
 
 const config = JSON.parse(
   readFileSync(new URL("./site.config.json", import.meta.url), "utf8"),
 );
-
-const { repoName } = await getReadMeSrc(config.githubName, config.repoName);
+const siteDataPath = new URL("./.cache/site.json", import.meta.url);
+const repoName =
+  config.basePath ||
+  (existsSync(siteDataPath)
+    ? JSON.parse(readFileSync(siteDataPath, "utf8")).repoName
+    : config.repoName?.trim() || config.githubName);
 
 export default defineConfig({
   site: config.siteUrl,
-  base: config.basePath || repoName,
+  base: repoName,
   output: "static",
   trailingSlash: "never",
   integrations: [sitemap()],

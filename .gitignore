@@ -157,6 +157,7 @@ vite.config.ts.timestamp-*
 .nx/migrate-runs
 
 public/i18n/
+i18n/target/
 .models/
 src/gen/
 .idea

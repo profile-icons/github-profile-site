@@ -44,8 +44,6 @@ jobs:
       - name: Build
         id: profile-site
         uses: profile-icons/github-profile-site@main
-        with:
-          hf-token: ${{ secrets.HF_TOKEN }}  # optional
 
       - name: Upload
         uses: actions/upload-pages-artifact@v5
@@ -301,7 +299,7 @@ Each entry in the **locales** array is a code corresponding to a language being 
 
 ###### HF_TOKEN
 
-Optionally, add a HuggingFace token as a repository secret named `HF_TOKEN` for authenticated model downloading.
+A Hugging Face token is required only when building i18n binaries. The repository secret is named `HF_TOKEN`.
 
 ### Icon Links
 
@@ -367,6 +365,11 @@ Each entry in the **links** `{key: value}` object maps a platform/icon ID (`key`
 npm install
 ```
 
+
+```Bash
+bash scripts/build-i18n.sh
+```
+
 ## i18n
 
 ```Bash
@@ -388,7 +391,7 @@ npm run preview
 
 # Contribute
 
-Before making a Pull Request linked to an Issue, verify:
+Before making an Issue-linked Pull Request, verify it passes CI checks:
 
 ```Bash
 npm run verify:fix

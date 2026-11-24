@@ -1,64 +1,34 @@
 ---
 import "../style.scss";
 import "../styles/_star_wars.scss";
-import { siteConfig } from "../config";
-import type { ThemeModalTrans } from "../lib/i18n";
-import {
-  allStylesCSS,
-  resolveStyle,
-  type Style,
-  styleNames,
-} from "../lib/style";
-import {
-  allThemesCSS,
-  resolveTheme,
-  resolveThemeColor,
-  type ThemeType,
-  themeAccentCSS,
-  themeBackgrounds,
-  themeBG,
-  themeColorCSS,
-  themeColorTone,
-  themeNames,
-} from "../lib/theme";
-
-interface TransClient {
-  locale: string;
-  title: string;
-  tagline: string;
-  themeModal: ThemeModalTrans;
-  readmeHTML: string;
-  version?: string;
-}
+import type { SiteData, SourceProfile } from "../lib/site";
 
 interface Props {
+  siteData: SiteData;
   title: string;
   description?: string;
   url?: URL;
   imageUrl?: string;
   imageAlt?: string;
   language?: string;
-  theme?: string;
-  themeColor?: string | undefined;
-  style?: string | undefined;
+  useThemeColor?: boolean;
   data?: Record<string, unknown>;
   favUrl?: string | undefined;
   isNoindex?: boolean;
   locales?: string[];
-  srcTrans?: TransClient;
+  srcTrans?: SourceProfile;
   defLanguage?: string;
 }
 
 const {
+  siteData,
   title,
   description,
   url,
   imageUrl,
   imageAlt,
   language = "en",
-  theme,
-  themeColor,
-  style,
+  useThemeColor = true,
   data,
   favUrl,
   isNoindex = false,
@@ -68,57 +38,37 @@ const {
 } = Astro.props;
 
 const baseUrl: string | undefined = url?.href;
-const gaId: string = siteConfig.gaId?.trim() ?? "";
+const gaId: string = siteData.config.gaId.trim();
 if (gaId && !/^G-[A-Z0-9]+$/.test(gaId)) {
   throw new Error(`Invalid Google Analytics measurement ID: ${gaId}`);
 }
 const gaCode: string | undefined = gaId
   ? `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', ${JSON.stringify(gaId)});`
   : undefined;
-const themeSelection: ThemeType = resolveTheme(theme);
-const resolvedThemeColor: string | undefined = resolveThemeColor(themeColor);
-const styleSelection: Style = resolveStyle(style);
-const fixedThemeColor: string | undefined =
-  themeSelection.type === "default" ? resolvedThemeColor : undefined;
-const accentThemeColor: string | undefined =
-  themeSelection.type !== "default" ? resolvedThemeColor : undefined;
-const fixedThemeTone: "light" | "dark" | undefined = fixedThemeColor
-  ? themeColorTone(fixedThemeColor)
+const { layout } = siteData;
+const { theme, style, themeCss, styleCss: themeStyleCss } = layout;
+const resolvedThemeColor: string | undefined = useThemeColor
+  ? (theme.themeColor ?? undefined)
   : undefined;
-const selectedThemeName: string =
-  themeSelection.type === "name" ? themeSelection.name : "abyss";
-const selectedStyleName: string =
-  styleSelection.type === "named" ? styleSelection.name : "solid";
-const availableThemes: string[] = themeNames();
-const availableStyles: string[] = styleNames();
-const themeCss: string = allThemesCSS(availableThemes);
-const themeColorInlineCss: string | undefined =
-  fixedThemeColor && fixedThemeTone
-    ? themeColorCSS(fixedThemeColor, fixedThemeTone, !selectedStyleName)
-    : accentThemeColor
-      ? themeAccentCSS(accentThemeColor)
-      : undefined;
-const themeStyleCss: string = allStylesCSS(availableStyles);
+const fixedThemeTone: "light" | "dark" | undefined = useThemeColor
+  ? (layout.fixedThemeTone ?? undefined)
+  : undefined;
+const selectedThemeName: string = theme.defaultName;
+const selectedStyleName: string = style.defaultName;
+const themeColorInlineCss: string | undefined = useThemeColor
+  ? (layout.themeColorInlineCss ?? undefined)
+  : undefined;
 const lightThemeColor: string | undefined =
-  resolvedThemeColor ??
-  (themeSelection.type !== "default"
-    ? themeBG(themeSelection.light)
-    : undefined);
+  (useThemeColor ? layout.lightThemeColor : layout.uncoloredLightThemeColor) ??
+  undefined;
 const darkThemeColor: string | undefined =
-  resolvedThemeColor ??
-  (themeSelection.type !== "default"
-    ? themeBG(themeSelection.dark)
-    : undefined);
+  (useThemeColor ? layout.darkThemeColor : layout.uncoloredDarkThemeColor) ??
+  undefined;
 const allThemeData: string = JSON.stringify({
-  names: availableThemes,
-  defaultName: selectedThemeName,
-  colors: themeBackgrounds(availableThemes),
+  ...theme,
   themeColor: resolvedThemeColor,
 }).replace(/</g, "\\u003c");
-const allStyleData: string = JSON.stringify({
-  names: availableStyles,
-  defaultName: selectedStyleName,
-}).replace(/</g, "\\u003c");
+const allStyleData: string = JSON.stringify(style).replace(/</g, "\\u003c");
 const jsonLd: string | undefined = data
   ? JSON.stringify(data).replace(/</g, "\\u003c")
   : undefined;
@@ -195,7 +145,11 @@ const i18n: string | undefined =
     )}
 
     <script>
-    import "../client/bootstrap";
+    import "../client/theme";
+    import "../client/style";
+    import "../client/locale";
+    import "../client/theme-mode";
+    import "../client/readme";
     </script>
 
     <title>{title}</title>

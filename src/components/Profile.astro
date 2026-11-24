@@ -6,49 +6,38 @@ import ToggleLocale from "../components/ToggleLocale.astro";
 import ToggleSiteStyle from "../components/ToggleSiteStyle.astro";
 import ToggleSiteTheme from "../components/ToggleSiteTheme.astro";
 import ToggleTheme from "../components/ToggleTheme.astro";
-import {
-  githubAvatarUrl,
-  githubProfileUrl,
-  localeSrc,
-  locales,
-  siteConfig,
-} from "../config";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { fetchAvatar } from "../lib/fav";
-import { fetchOrgs } from "../lib/gh";
-import { getIconLinks, idUrls } from "../lib/links";
-import { getTranslations } from "../lib/profile";
-import { styleNames } from "../lib/style";
+import { type IconLink, readSiteData } from "../lib/site";
 
+const siteData = await readSiteData();
 const {
   description,
   githubName,
-  links,
-  organizations: orgNames,
   tabName,
   theme,
-  themeColor,
-  style,
-} = siteConfig;
+  githubAvatarUrl,
+  githubProfileUrl,
+} = siteData.config;
+const {
+  localeSrc,
+  locales,
+  profile: profileSrc,
+  favUrl,
+  iconLinks,
+  orgBadges,
+  layout,
+} = siteData;
 const isToggleLocale: boolean = locales.length > 1;
-const [profileSrc, favUrl, iconLinks, orgBadges] = await Promise.all([
-  getTranslations(localeSrc),
-  fetchAvatar(githubAvatarUrl),
-  getIconLinks(links),
-  fetchOrgs(orgNames ?? []),
-]);
-
-const srcTrans = {
-  locale: localeSrc,
-  title: profileSrc.title,
-  tagline: profileSrc.tagline,
-  themeModal: profileSrc.themeModal,
-  readmeHTML: profileSrc.readme.html,
-  version: profileSrc.version,
-};
 
 const url: URL = new URL(Astro.url.pathname, Astro.site);
-const sameAs: string[] = [...new Set([githubProfileUrl, ...idUrls(iconLinks)])];
+const sameAs: string[] = [
+  ...new Set([
+    githubProfileUrl,
+    ...iconLinks
+      .filter((link: IconLink): boolean => link.isOpenTab)
+      .map((link: IconLink): string => link.url),
+  ]),
+];
 
 const structData = {
   "@context": "https://schema.org",
@@ -70,19 +59,17 @@ const structData = {
 ---
 
 <BaseLayout
+  siteData={siteData}
   title={profileSrc.title}
   description={description}
   url={url}
   imageUrl={githubAvatarUrl}
   imageAlt={`${tabName}'s GitHub profile photo`}
   language={localeSrc}
-  theme={theme}
-  themeColor={themeColor}
-  style={style}
   data={structData}
-  favUrl={favUrl}
+  favUrl={favUrl ?? undefined}
   locales={locales}
-  srcTrans={srcTrans}
+  srcTrans={profileSrc}
   defLanguage={localeSrc}
 >
   <main
@@ -97,12 +84,14 @@ const structData = {
         imageUrl={githubAvatarUrl}
         tagline={profileSrc.tagline}
         translations={profileSrc.themeModal}
-        styleNames={styleNames()}
+        styleNames={layout.style.names}
+        names={layout.theme.names}
       />
       <ToggleSiteStyle
         imageUrl={githubAvatarUrl}
         tagline={profileSrc.tagline}
         theme={theme}
+        names={layout.style.names}
         translations={profileSrc.themeModal}
       />
       <ToggleTheme />
@@ -129,7 +118,7 @@ const structData = {
             class="gh-readme "
             data-crawl-original
             data-i18n-readme
-            set:html={profileSrc.readme.html}
+            set:html={profileSrc.readmeHTML}
           />
         </div>
       </div>

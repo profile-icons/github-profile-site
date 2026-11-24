@@ -1,21 +1,21 @@
 ---
 import { type ThemeModalTrans, themeModalSrc } from "../lib/i18n";
-import { styleNames } from "../lib/style";
 import SitePreview from "./SitePreview.astro";
 
 interface Props {
+  names: string[];
   imageUrl: string;
   tagline?: string;
   theme?: string;
   translations?: ThemeModalTrans;
 }
 const {
+  names,
   imageUrl,
   tagline,
   theme = "abyss",
   translations = themeModalSrc,
 } = Astro.props;
-const names: string[] = styleNames();
 const styleLbl = (name: string): string =>
   name
     .split(/[-_]+/)

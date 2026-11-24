@@ -29,8 +29,25 @@ jobs:
       - name: Check
         run: npm run verify
 
-      - name: i18n
-        run: npm run i18n
+      - name: Rust
+        run: rustup toolchain install 1.100.0 --profile minimal
+
+      - name: Cache
+        uses: actions/cache@v6
+        with:
+          path: |
+            .cache/i18n/lib
+            .cache/i18n/model-cache
+          key: i18n-small100-a0d8498-ort-1.22.0-linux-x64
+
+      - name: Setup i18n
+        run: |
+          rustup override set 1.100.0
+          if [[ ! -f i18n/Cargo.lock ]]; then
+            cargo generate-lockfile --manifest-path i18n/Cargo.toml
+          fi
+          cargo test --locked --manifest-path i18n/Cargo.toml --target-dir .cache/i18n-target
+          bash scripts/build-i18n.sh
 
       - name: Build
         run: npm run build

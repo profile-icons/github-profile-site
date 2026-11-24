@@ -254,7 +254,7 @@ html[data-site-theme="star_wars"] .star-wars-crawl-motion {
   position: absolute;
   top: 88%;
   left: 50%;
-  width: min(760px, 79vw);
+  width: min(900px, 79vw);
   margin: 0;
   padding-bottom: 1px;
   color: var(--sw-gold);
@@ -284,7 +284,7 @@ html[data-site-theme="star_wars"] .star-wars-crawl-probe {
   position: absolute;
   top: 88%;
   left: 50%;
-  width: min(760px, 79vw);
+  width: min(900px, 79vw);
   height: 1px;
   visibility: hidden;
   pointer-events: none;
@@ -595,7 +595,7 @@ html[data-site-theme="star_wars"] .site-theme-dialog {
     position: relative;
     top: auto;
     left: auto;
-    width: min(100%, 760px);
+    width: min(100%, 900px);
     margin: 0 auto;
     transform: none !important;
     animation: none !important;

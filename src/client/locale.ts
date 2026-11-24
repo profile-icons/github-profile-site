@@ -1,4 +1,4 @@
-import type { ThemeModalTrans } from "../lib/i18n";
+import { localeNorm, type ThemeModalTrans } from "../lib/i18n";
 
 type LocaleEntry = { locale: string; localeNorm: string };
 type LocaleInfo = { language: string; script: string };
@@ -20,12 +20,6 @@ type Translation = {
     const parsed: unknown = JSON.parse(payloadElement.textContent ?? "{}");
     if (!parsed || typeof parsed !== "object") return;
     const payload: Record<string, unknown> = parsed as Record<string, unknown>;
-    const localeNorm = (locale: unknown): string =>
-      String(locale ?? "")
-        .trim()
-        .replaceAll("_", "-")
-        .toLowerCase();
-
     const locales: LocaleEntry[] = (
       Array.isArray(payload.locales) ? payload.locales : []
     )
@@ -466,11 +460,7 @@ type Translation = {
     warmRemainingTranslations(initialEntry.localeNorm);
 
     window.addEventListener("i18n-toggle", () => {
-      const curIdx = locales.findIndex(
-        ({ localeNorm: entryNorm }: LocaleEntry): boolean =>
-          entryNorm === selectedLocaleNorm,
-      );
-      const next = locales[(curIdx + 1) % locales.length] ?? srcEntry;
+      const next: LocaleEntry = followingLocale(selectedLocaleNorm);
 
       void selectLocale(next, {
         persist: true,

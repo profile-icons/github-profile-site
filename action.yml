@@ -1,5 +1,5 @@
 name: "GitHub Profile Site"
-description: "Build a configurable GitHub profile site with avatar, & optional tagline, translations, themes, & icon links."
+description: "Deploy a configurable GitHub profile site with avatar, & optional tagline, translations, themes, & icon links."
 author: "profile-icons"
 
 branding:
@@ -11,11 +11,6 @@ inputs:
     description: "Path to the `site.config.json` file"
     required: false
     default: "site.config.json"
-
-  hf-token:
-    description: "Hugging Face token for authenticated model downloads"
-    required: false
-    default: ""
 
 outputs:
   dist-path:
@@ -48,17 +43,28 @@ runs:
         node-version: 26
         package-manager-cache: false
 
-    - name: Cache
-      uses: actions/cache@v6
-      with:
-        path: |
-          ${{ runner.temp }}/github-profile-site/.cache/huggingface
-        key: hf-small100-onnx-int8-${{ runner.os }}-${{ runner.arch }}-v3
-
     - name: Install
       shell: bash
       working-directory: ${{ runner.temp }}/github-profile-site
       run: npm ci
+
+    - name: Setup i18n
+      shell: bash
+      working-directory: ${{ runner.temp }}/github-profile-site
+      run: |
+        if [[ -e "$GITHUB_ACTION_PATH/.git" ]]; then
+          sha="$(git -C "$GITHUB_ACTION_PATH" rev-parse HEAD)"
+          repo="${ACTION_REPOSITORY:-$GITHUB_REPOSITORY}"
+        else
+          repo="${ACTION_REPOSITORY:?GitHub Action repository is required}"
+          ref="${ACTION_REF:?GitHub Action ref is required}"
+          sha="$(gh api "repos/$repo/commits/$(jq -rn --arg ref "$ref" '$ref|@uri')" --jq .sha)"
+        fi
+        bash scripts/setup-bin.sh "$repo" "$sha"
+      env:
+        ACTION_REPOSITORY: ${{ github.action_repository }}
+        ACTION_REF: ${{ github.action_ref }}
+        GH_TOKEN: ${{ github.token }}
 
     - name: i18n
       shell: bash
@@ -66,7 +72,6 @@ runs:
       run: npm run i18n
       env:
         GITHUB_TOKEN: ${{ github.token }}
-        HF_TOKEN: ${{ inputs.hf-token }}
 
     - name: Build
       id: build

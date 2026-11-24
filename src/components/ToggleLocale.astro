@@ -99,13 +99,12 @@ const isLocaleDialog: boolean = sortedLocales.length > 2;
 )}
 
 <script>
+import { localeNorm } from "../lib/i18n";
+
 const button: HTMLElement | null = document.getElementById("i18n-toggle");
 const root: HTMLElement = document.documentElement;
 const dialog: HTMLDialogElement | null =
   document.querySelector<HTMLDialogElement>("#i18n-dialog");
-
-const localeNorm = (locale: string): string =>
-  locale.trim().replaceAll("_", "-").toLowerCase();
 
 const languageName = (locale: string, displayLocale: string): string => {
   try {

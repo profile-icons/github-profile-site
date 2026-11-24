@@ -1,19 +1,20 @@
 ---
-import { githubAvatarUrl, siteConfig } from "../config";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { readSiteData } from "../lib/site";
 
-const { tabName, language, theme, style } = siteConfig;
+const siteData = await readSiteData();
+const { tabName, language, githubAvatarUrl } = siteData.config;
 const title: string = `Page not found — ${tabName}`;
 ---
 
 <BaseLayout
+  siteData={siteData}
   title={title}
   description="The requested page could not be found."
   imageUrl={githubAvatarUrl}
   imageAlt={`${tabName}'s GitHub profile photo`}
   language={language}
-  theme={theme}
-  style={style}
+  useThemeColor={false}
   isNoindex
 >
   <main class="v-404-1">
