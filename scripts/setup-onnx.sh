@@ -18,9 +18,8 @@ lib_dir="${1:?ONNX library directory is required}"
 
 mkdir -p "$lib_dir"
 
-if [[ ! -s "$lib_dir/libonnxruntime.so.1.22.0" || ! -s "$lib_dir/libonnxruntime_providers_shared.so" ]]; then
+if [[ ! -s "$lib_dir/libonnxruntime.so.1.31.1" || ! -s "$lib_dir/libonnxruntime_providers_shared.so" ]]; then
   tmp_dir="$(mktemp -d)"
-
   trap 'rm -rf -- "$tmp_dir"' EXIT
 
   curl --fail --location --retry 3 \
@@ -31,7 +30,6 @@ if [[ ! -s "$lib_dir/libonnxruntime.so.1.22.0" || ! -s "$lib_dir/libonnxruntime_
   unzip -jo "$tmp_dir/runtime.nupkg" \
     "runtimes/$platform/native/*.so*" \
     -d "$tmp_dir"
-
   install -m 644 "$tmp_dir/libonnxruntime.so" "$lib_dir/libonnxruntime.so.1.31.1"
   install -m 644 "$tmp_dir/libonnxruntime_providers_shared.so" "$lib_dir/libonnxruntime_providers_shared.so"
 

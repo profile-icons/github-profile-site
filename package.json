@@ -20,7 +20,9 @@
     "dev": "npm run i18n && astro dev",
     "build": "npm run i18n && astro build",
     "preview": "astro preview",
-    "verify": "biome check . && astro check && tsc --noEmit && cargo fmt --manifest-path i18n/Cargo.toml --all -- --check && cargo clippy --manifest-path i18n/Cargo.toml --locked --all-targets --all-features -- -D warnings",
+    "verify:web": "biome check . && astro check && tsc --noEmit",
+    "verify:rust": "cargo fmt --manifest-path i18n/Cargo.toml --all -- --check && cargo clippy --manifest-path i18n/Cargo.toml --locked --all-targets --all-features -- -D warnings",
+    "verify": "npm run verify:web && npm run verify:rust",
     "verify:fix": "biome check --write . && cargo clippy --manifest-path i18n/Cargo.toml --locked --fix --allow-dirty --allow-staged --all-targets --all-features -- -D warnings && cargo fmt --manifest-path i18n/Cargo.toml --all && npm run verify"
   },
   "dependencies": {
@@ -31,7 +33,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "@biomejs/biome": "^2.6.8",
+    "@biomejs/biome": "^2.6.9",
     "sass": "^1.108.2",
     "typescript": "^6.0.3"
   },
