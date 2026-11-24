@@ -3,13 +3,20 @@ set -euo pipefail
 
 src_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 repo="${1:-profile-icons/github-profile-site}"
-src_sha="${2:-$(git -C "$src_dir" rev-parse HEAD)}"
+source_key="${2:-$(bash "$src_dir/scripts/i18n-key.sh")}"
 
-if [[ ! "$src_sha" =~ ^[0-9a-f]{40}$ || ! "$repo" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
-  printf '%s\n' '::error::Expected a GitHub repository and a full source commit SHA.' >&2
+if [[ ! "$repo" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]; then
+  printf '%s\n' '::error::Expected a GitHub repository (owner/name).' >&2
   exit 1
 fi
-
+if [[ "$source_key" =~ ^[0-9a-f]{64}$ ]]; then
+  metadata=SOURCE_HASH
+elif [[ "$source_key" =~ ^[0-9a-f]{40}$ ]]; then
+  metadata=SOURCE_COMMIT
+else
+  printf '%s\n' '::error::Expected a SHA-256 source hash or legacy full commit SHA.' >&2
+  exit 1
+fi
 case "$(uname -s)/$(uname -m)" in
   Linux/x86_64)
     platform="linux-x64"
@@ -24,7 +31,7 @@ case "$(uname -s)/$(uname -m)" in
 esac
 
 asset="gh-profile-i18n-$platform.tar.gz"
-tag="binary-$src_sha"
+tag="binary-$source_key"
 url="https://github.com/$repo/releases/download/$tag"
 bin_dir="$src_dir/.cache/i18n"
 tmp_dir="$(mktemp -d)"
@@ -32,7 +39,6 @@ tmp_dir="$(mktemp -d)"
 trap 'rm -rf -- "$tmp_dir"' EXIT
 
 mkdir -p "$tmp_dir/extract"
-
 for file in "$asset.sha256" "$asset"; do
   if ! curl --fail --location --retry 3 \
     --proto '=https' --proto-redir '=https' --tlsv1.2 \
@@ -49,18 +55,16 @@ done
 
   sha256sum --check --strict "$asset.sha256"
 )
-
 tar --extract --gzip --no-same-owner --no-same-permissions \
   --file "$tmp_dir/$asset" \
   --directory "$tmp_dir/extract" \
-  gh-profile-i18n run-i18n SOURCE_COMMIT lib model-cache
+  gh-profile-i18n run-i18n "$metadata" lib model-cache
 
 extracted="$tmp_dir/extract"
-
 for file in \
   gh-profile-i18n \
   run-i18n \
-  SOURCE_COMMIT \
+  "$metadata" \
   lib/libonnxruntime.so.1.31.1 \
   lib/libonnxruntime_providers_shared.so \
   model-cache/small100/a0d8498/tokenizer.json \
@@ -72,9 +76,8 @@ for file in \
     exit 1
   fi
 done
-
-if [[ "$(cat "$extracted/SOURCE_COMMIT")" != "$src_sha" ]]; then
-  printf '%s\n' '::error::Localization bundle does not match the source commit.' >&2
+if [[ "$(cat "$extracted/$metadata")" != "$source_key" ]]; then
+  printf '%s\n' '::error::Localization bundle does not match the requested source identity.' >&2
   exit 1
 fi
 
@@ -82,11 +85,11 @@ mkdir -p "$bin_dir"
 
 install -m 755 "$extracted/gh-profile-i18n" "$bin_dir/gh-profile-i18n"
 install -m 755 "$extracted/run-i18n" "$bin_dir/run-i18n"
-install -m 644 "$extracted/SOURCE_COMMIT" "$bin_dir/SOURCE_COMMIT"
+rm -f -- "$bin_dir/SOURCE_HASH" "$bin_dir/SOURCE_COMMIT"
+install -m 644 "$extracted/$metadata" "$bin_dir/$metadata"
 
 rm -rf -- "$bin_dir/lib" "$bin_dir/model-cache"
 mv -- "$extracted/lib" "$extracted/model-cache" "$bin_dir/"
-
 if [[ -n "${GITHUB_ENV:-}" ]]; then
   printf 'I18N_BIN=%s\n' "$bin_dir/run-i18n" >> "$GITHUB_ENV"
 fi

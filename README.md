@@ -320,7 +320,7 @@ Each entry in the **links** `{key: value}` object maps a platform/icon ID (`key`
   "theme": "github_soft",
   "themeColor": "",
   "style": "aurora",
-  "organizations": ["profile-icons", "uni-projects-demos", "uni-git-projects"],
+  "organizations": ["myanzac", "profile-icons", "uni-projects-demos", "uni-git-projects"],
   "language": "en",
   "locales": [
     "en",
@@ -347,12 +347,12 @@ Each entry in the **links** `{key: value}` object maps a platform/icon ID (`key`
     "cs"
   ],
   "links": {
-    "buymeacoffee": "https://buymeacoffee.com/kofi.kiwi",
+    "buymeacoffee": "https://buymeacoffee.com/kawhe.kiwi",
     "github": "https://r055a.github.io/r055a/",
     "huggingface": "https://huggingface.co/r055a",
     "kaggle": "https://www.kaggle.com/r055a20",
     "ko-fi": "https://ko-fi.com/kawhe_kiwi",
-    "x": "https://x.com/r0S5a",
+    "x": "https://x.com/kawhekiwi",
     "youtube": "https://youtube.com/@whatevername"
   },
   "gaId": ""

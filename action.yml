@@ -22,9 +22,11 @@ runs:
   steps:
     - name: Init
       shell: bash
+      env:
+        CONFIG_PATH: ${{ inputs.config-path }}
       run: |
         BUILD_DIR="$RUNNER_TEMP/github-profile-site"
-        CONFIG_PATH="${{ github.workspace }}/${{ inputs.config-path }}"
+        CONFIG_PATH="$GITHUB_WORKSPACE/$CONFIG_PATH"
 
         if [[ ! -f "$CONFIG_PATH" ]]; then
           echo "::error::Config file not found: $CONFIG_PATH"
@@ -52,19 +54,11 @@ runs:
       shell: bash
       working-directory: ${{ runner.temp }}/github-profile-site
       run: |
-        if [[ -e "$GITHUB_ACTION_PATH/.git" ]]; then
-          sha="$(git -C "$GITHUB_ACTION_PATH" rev-parse HEAD)"
-          repo="${ACTION_REPOSITORY:-$GITHUB_REPOSITORY}"
-        else
-          repo="${ACTION_REPOSITORY:?GitHub Action repository is required}"
-          ref="${ACTION_REF:?GitHub Action ref is required}"
-          sha="$(gh api "repos/$repo/commits/$(jq -rn --arg ref "$ref" '$ref|@uri')" --jq .sha)"
-        fi
-        bash scripts/setup-bin.sh "$repo" "$sha"
+        repo="${ACTION_REPOSITORY:-$GITHUB_REPOSITORY}"
+        key="$(bash scripts/i18n-key.sh)"
+        bash scripts/setup-bin.sh "$repo" "$key"
       env:
         ACTION_REPOSITORY: ${{ github.action_repository }}
-        ACTION_REF: ${{ github.action_ref }}
-        GH_TOKEN: ${{ github.token }}
 
     - name: i18n
       shell: bash

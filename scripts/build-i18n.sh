@@ -11,10 +11,10 @@ model_dir="$bin_dir/model-cache/small100/a0d8498"
 model_url='https://huggingface.co/casawolice/small100-onnx/resolve/a0d8498bbf489866eeff5e53b53f6997d2b299db'
 
 if [[ ! -f "$src_dir/i18n/Cargo.lock" ]]; then
-  cargo generate-lockfile --manifest-path "$src_dir/i18n/Cargo.toml"
+  printf '%s\n' '::error::Missing i18n/Cargo.lock; generate and commit it before building.' >&2
+  exit 1
 fi
-
-cargo build --locked \
+cargo +1.100.0 build --locked \
   --manifest-path "$src_dir/i18n/Cargo.toml" \
   --release \
   --target-dir "$src_dir/.cache/i18n-target"
@@ -30,7 +30,6 @@ hf_headers=()
 if [[ -n "${HF_TOKEN:-}" ]]; then
   hf_headers=(-H "Authorization: Bearer $HF_TOKEN")
 fi
-
 for remote in tokenizer.json lang_tokens.json onnx/encoder_model.onnx onnx/decoder_model_merged.onnx; do
   file="$model_dir/${remote##*/}"
 
@@ -47,14 +46,13 @@ done
 
 (
   cd "$model_dir"
-
   sha256sum --check --strict <<'CHECKSUMS'
 a130f553106646e56c1908094074f354353c45d86b3e8d222b037784035e6dcd  encoder_model.onnx
 f966ce4f1f484c2307dc007ef0beadc3a1651220c1ff9b33ea8dddbce468a4b0  decoder_model_merged.onnx
 CHECKSUMS
 )
 
-git -C "$src_dir" rev-parse HEAD > "$bin_dir/SOURCE_COMMIT"
+bash "$src_dir/scripts/i18n-key.sh" > "$bin_dir/SOURCE_HASH"
 
 "$bin_dir/run-i18n" --smoke-test
 

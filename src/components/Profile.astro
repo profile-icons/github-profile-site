@@ -73,13 +73,13 @@ const structData = {
   defLanguage={localeSrc}
 >
   <main
-    class="star-wars-profile "
+    class="star-wars-profile"
     aria-label="GitHub profile README"
     style={`--starfield-url: url('${import.meta.env.BASE_URL.replace(/\/?$/, "/")}starfield.svg')`}
   >
-    <div class="star-wars-stars " aria-hidden="true"></div>
+    <div class="star-wars-stars" aria-hidden="true"></div>
 
-    <nav class="star-wars-controls " aria-label="Display settings">
+    <nav class="star-wars-controls" aria-label="Display settings">
       <ToggleSiteTheme
         imageUrl={githubAvatarUrl}
         tagline={profileSrc.tagline}
@@ -98,8 +98,8 @@ const structData = {
       {isToggleLocale && <ToggleLocale locales={locales} />}
     </nav>
 
-    <header class="star-wars-identity ">
-      <div class="star-wars-identity-plane ">
+    <header class="star-wars-identity">
+      <div class="star-wars-identity-plane">
         <ProfileAvatar
           imageUrl={githubAvatarUrl}
           profileUrl={githubProfileUrl}
@@ -111,11 +111,11 @@ const structData = {
       </div>
     </header>
 
-    <div class="star-wars-crawl-window ">
-      <div class="star-wars-crawl-plane ">
-        <div class="star-wars-crawl-motion " id="star-wars-crawl">
+    <div class="star-wars-crawl-window">
+      <div class="star-wars-crawl-plane">
+        <div class="star-wars-crawl-motion" id="star-wars-crawl">
           <article
-            class="gh-readme "
+            class="gh-readme"
             data-crawl-original
             data-i18n-readme
             set:html={profileSrc.readmeHTML}
@@ -125,18 +125,18 @@ const structData = {
     </div>
 
     <button
-      class="star-wars-pause-button "
+      class="star-wars-pause-button"
       type="button"
       aria-label="Pause README crawl"
       aria-pressed="false"
       title="pause"
       data-crawl-toggle
     >
-      <svg class="star-wars-pause-icon " viewBox="0 0 24 24" aria-hidden="true">
+      <svg class="star-wars-pause-icon" viewBox="0 0 24 24" aria-hidden="true">
         <rect x="6.5" y="5" width="3.5" height="14" rx="0.7" />
         <rect x="14" y="5" width="3.5" height="14" rx="0.7" />
       </svg>
-      <svg class="star-wars-play-icon " viewBox="0 0 24 24" aria-hidden="true">
+      <svg class="star-wars-play-icon" viewBox="0 0 24 24" aria-hidden="true">
         <path
           d="M8 5.25a1 1 0 0 1 1.52-.85l10 6.75a1 1 0 0 1 0 1.7l-10 6.75A1 1 0 0 1 8 18.75Z"
         />
